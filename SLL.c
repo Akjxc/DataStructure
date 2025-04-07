@@ -70,6 +70,81 @@ Node* SLL_GetNodeAt(Node* Head, int Location){
   return Current;
 }
 
+void SLL_RemoveNode(Node** Head, Node* Remove){
+  if(*Head == Remove){
+    *Head = Remove->NextNode;
+  }
+  else{
+    Node* Current = *Head;
+    while(Current != NULL && Current->NextNode != Remove){
+      Current = Current->NextNode;
+    }
+
+    if(Current != NULL){
+      Current->NextNode = Remove->NextNode;
+    }
+  }
+}
+
+void SLL_InsertAfter(Node* Current, Node* NewNode){
+  NewNode->NextNode = Current->NextNode;
+  Current->NextNode = NewNode;
+}
+
+void SLL_InsertNewHead(Node** Head, Node* NewHead){
+  if(Head == NULL){
+    *Head = NewHead;
+  }
+  else {
+    NewHead->NextNode = *Head;
+    *Head = NewHead;
+  }
+}
+
+int SLL_GetNodeCount(Node* Head){
+  int Count = 0;
+  Node* Current = Head;
+
+  while(Current != NULL){
+    Current = Current->NextNode;
+    Count++;
+  }
+
+  return Count;
+}
+
+// Quiz 1-2
+void SLL_InsertBefore(Node** Head, Node* Current, Node* NewNode){
+  while(Head != NULL && (*Head)->NextNode != Current){
+    *Head = (*Head)->NextNode;
+  }
+  (*Head)->NextNode = NewNode;
+  NewNode->NextNode = Current;
+}
+
+//GPT 사용함
+void SLL_DestroyAllNodes(Node** List){
+  Node* Current;
+
+  while(*List != NULL){
+    Current = *List; // 항상 첫번째 노드 가져옴
+    SLL_RemoveNode(List, Current);
+    free(Current);
+  }
+}
+// 내가 작성한 코드 : 
+// SLL_GetNodeCount(*List)는 처음에는 올바른 개수를 반환하지만, SLL_RemoveNode()가 실행될 때마다 리스트 크기가 줄어듦.
+// 하지만 for 루프에서 초기 리스트 개수만큼 반복하려고 시도함. 즉, 리스트 크기가 줄어들면서 i 값이 SLL_GetNodeCount(*List)보다 커지게 됨.
+// 따라서 마지막 노드가 삭제되지 않았던 것.
+// void SLL_DestroyAllNodes(Node** List){
+//   Node* Current;
+
+//   for(int i = 0; i < SLL_GetNodeCount(*List); i++){
+//     Current = SLL_GetNodeAt(*List, 0);
+//     SLL_RemoveNode(List, Current);
+//   }
+// }
+
 int main(void) {
   /* <노드 추가>
   Node* List = NULL;
@@ -80,13 +155,61 @@ int main(void) {
   SLL_AppendNode(&List, NewNode);
   */
 
+  // 노드 탐색
+  // Node* List = NULL;
+  // Node* MyNode = NULL;
+
+  // SLL_AppendNode(&List, SLL_CreateNode(117));
+  // SLL_AppendNode(&List, SLL_CreateNode(119));
+
+  // MyNode = SLL_GetNodeAt(List, 0);
+  // printf("%d\n", MyNode->Data);
+  
+  // 노드 삭제
+  // Node* List = NULL;
+  // Node* MyNode = NULL;
+
+  // SLL_AppendNode(&List, SLL_CreateNode(117));
+  // SLL_AppendNode(&List, SLL_CreateNode(119));
+  // SLL_AppendNode(&List, SLL_CreateNode(212));
+
+  // MyNode = SLL_GetNodeAt(List, 1);
+  // printf("%d\n", MyNode->Data);
+
+  // SLL_RemoveNode(&List, MyNode);
+
+  // SLL_DestroyNode(MyNode);
+
+  //Quiz 1-2 test
   Node* List = NULL;
   Node* MyNode = NULL;
 
-  SLL_AppendNode(&List, SLL_CreateNode(117));
-  SLL_AppendNode(&List, SLL_CreateNode(119));
+  SLL_AppendNode(&List, SLL_CreateNode(1));
+  SLL_AppendNode(&List, SLL_CreateNode(2));
 
-  MyNode = SLL_GetNodeAt(List, 0);
-  printf("%d\n", MyNode->Data);
-  
+  printf("삽입 전\n");
+  for(int i=0; i < SLL_GetNodeCount(List); i++){
+    Node* Current = SLL_GetNodeAt(List, i);
+    printf("List[%d] : %d\t", i, Current->Data);
+  }
+  printf("\n");
+
+  MyNode = SLL_CreateNode(150);
+  SLL_InsertBefore(&List, SLL_GetNodeAt(List, 1), MyNode);
+
+  printf("삽입 후\n");
+  for(int i=0; i < SLL_GetNodeCount(List); i++){
+    Node* Current = SLL_GetNodeAt(List, i);
+    printf("List[%d] : %d\t", i, Current->Data);
+  }
+  printf("\n");
+
+  SLL_DestroyAllNodes(&List);
+
+  printf("노드 전체 삭제 후\n");
+  for(int i=0; i < SLL_GetNodeCount(List); i++){
+    Node* Current = SLL_GetNodeAt(List, i);
+    printf("List[%d] : %d\t", i, Current->Data);
+  }
+  printf("\n");  
 }
