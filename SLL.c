@@ -123,12 +123,10 @@ void SLL_InsertBefore(Node** Head, Node* Current, Node* NewNode){
 }
 
 //GPT 사용함
-void SLL_DestroyAllNodes(Node** List){
-  Node* Current;
-
-  while(*List != NULL){
-    Current = *List; // 항상 첫번째 노드 가져옴
-    SLL_RemoveNode(List, Current);
+void SLL_DestroyAllNodes(Node** Head){
+  while(*Head != NULL){
+    Node* Current = *Head; // 항상 첫번째 노드 가져옴 - 리스트를 가져온다는 것은 리스트의 헤드를 가져오는 것.
+    SLL_RemoveNode(Head, Current);
     free(Current);
   }
 }
