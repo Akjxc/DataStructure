@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 // https://velog.io/@profile_exe/CMake-environment-configuration - g++ 및 Cmake 환경설정
 
@@ -6,7 +7,7 @@ typedef int ElementType;
 
 typedef struct tagNode {
   ElementType Data;
-  struct Node* NextNode;
+  struct tagNode* NextNode;
 } Node;
 
 Node* SLL_CreateNode(ElementType NewData){
@@ -85,7 +86,7 @@ int main(void) {
   SLL_AppendNode(&List, SLL_CreateNode(117));
   SLL_AppendNode(&List, SLL_CreateNode(119));
 
-  MyNode = SLL_GetNodeAt(List, 1);
+  MyNode = SLL_GetNodeAt(List, 0);
   printf("%d\n", MyNode->Data);
   
 }
